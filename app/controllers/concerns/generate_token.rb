@@ -19,8 +19,7 @@ module GenerateToken
       [video_grant],
       identity: identity
       )
-
-    puts token.to_jwt
+    token.to_jwt
 
 
   end

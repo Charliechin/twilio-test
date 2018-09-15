@@ -3,12 +3,12 @@ class HomeController < ApplicationController
   before_action :create_token
 
   def index
+    binding.pry
   end
 
   private
 
   def create_token
    @token = generate_token
-   puts @token
   end
 end
