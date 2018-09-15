@@ -17,6 +17,32 @@
 //= require turbolinks
 //= require_tree .
 
+$(document).on('turbolinks:load', function () {
+
+
+
+
+//inviteAccepted
+function conversationStarted(conversation) {
+  //Write code to handle the conversation here
+  alert("tomaaaa")
+}
+
+function onInviteAccepted(conversation) {
+  conversation.localMedia.attach('#local');
+
+  conversation.on('participantConnected', function(participant) {
+    participant.media.attach('#remote');
+
+    conversationStarted(conversation);
+  });
+}
+
+
+
+});
+
+
 // $(document).on('turbolinks:load', function () {
 //   var activeRoom;
 //   var previewTracks;

@@ -1,0 +1,38 @@
+<h1>Home#assesor</h1>
+<h2 class="lead">Assesor</h2>
+<p class="lead">Find me in app/views/home/index.html.erb</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+     <div id="remote"></div>
+     <div id="local"></div>
+     <script src="https://media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
+     <script src="https://media.twiliocdn.com/sdk/js/conversations/v0.13/twilio-conversations.min.js"></script>
+   </div>
+ </div>
+</div>
+
+
+</div>
+
+<script>
+ // REMOTE -Assesor
+ var asessorAccessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzViOWJmZmQ1MzEzZjM3YWY3ZTFlNTg2Yjc5NGQ4Y2YyLTE1MzcwMjI0NjciLCJpc3MiOiJTSzViOWJmZmQ1MzEzZjM3YWY3ZTFlNTg2Yjc5NGQ4Y2YyIiwic3ViIjoiQUMxN2Y2MzM5MjRmODE5ODc5YzVmMWY4Mzg3N2YzZWY4NSIsImV4cCI6MTUzNzAyNjA2NywiZ3JhbnRzIjp7ImlkZW50aXR5IjoiYXNzZXNvciIsInZpZGVvIjp7InJvb20iOiJyb29tLWRldiJ9fX0.2SB57B2soamh1H5IVq9DZY2Gkbbw2PTRIB0t4Kxj6Zw';
+ var assesorAccessManager = new Twilio.AccessManager(asessorAccessToken);
+ var client = new Twilio.Conversations.Client(assesorAccessManager);
+ // identities: assesor & student
+ client.inviteToConversation('student').then(onInviteAccepted);
+ console.log(client);
+
+function onInviteAccepted(conversation) {
+  conversation.localMedia.attach('#local');
+
+  conversation.on('participantConnected', function(participant) {
+    participant.media.attach('#remote');
+
+    conversationStarted(conversation);
+  });
+}
+
+
+</script>

@@ -3,7 +3,9 @@ class HomeController < ApplicationController
   before_action :create_token
 
   def index
-    binding.pry
+  end
+
+  def student
   end
 
   private
