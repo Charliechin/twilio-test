@@ -67,4 +67,6 @@ gem 'pry-rails'
 gem 'bootstrap', '~> 4.1.3'
 gem 'jquery-rails'
 gem 'twilio-ruby', '~> 5.12.4'
+gem 'annotate'
+gem 'authy'
 #######
