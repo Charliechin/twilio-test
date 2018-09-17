@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   post 'home/verify'
   get  'home/students'
   get  'home/call'
+  post 'token/generate' => "token#generate"
+  post 'call/connect' => "call#connect"
+
+
+
   devise_for :users, controllers: {
     registrations: 'users/registrations',
     sessions: 'users/sessions'
