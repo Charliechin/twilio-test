@@ -12,20 +12,38 @@
 
 <h1>Just To Be Safe...</h1>
 <p>
-    Your account has been created, but we need to make sure you're a human
-    in control of the phone number you gave us. Can you please enter the
-    verification code we just sent to your phone?
+  Your account has been created, but we need to make sure you're a human
+  in control of the phone number you gave us. Can you please enter the
+  verification code we just sent to your phone?
 </p>
 <%= form_tag home_verify_path do %>
-  <div class="form-group">
-    <%= label_tag :code, "Verification Code:" %>
-    <%= text_field_tag :token, '', class: "form-control" %>
-  </div>
-  <button type="submit" class="btn btn-primary">Verify Token</button>
+<div class="form-group">
+  <%= label_tag :code, "Verification Code:" %>
+  <%= text_field_tag :token, '', class: "form-control" %>
+</div>
+<button type="submit" class="btn btn-primary">Verify Token</button>
 <% end -%>
 
 <hr>
 <%= form_tag home_resend_path do %>
-  <button type="submit" class="btn">Resend code</button>
+<button type="submit" class="btn">Resend code</button>
 <% end -%>
+
+<h2> browse video </h2>
+
+ <div class="panel panel-info client-controls">
+        <div class="panel-heading">
+          <h3 class="panel-title">Talk to support now</h3>
+        </div>
+        <div class="panel-body">
+          <p><strong>Status</strong></p>
+          <div class="well well-sm" id="call-status">
+            Connecting to Twilio...
+          </div>
+
+          <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent()">
+            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call student
+          </button>
+          <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>
+        </div>
 
