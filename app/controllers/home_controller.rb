@@ -12,6 +12,15 @@ class HomeController < ApplicationController
     return redirect_to new_user_session_path unless session[:user_id]
   end
 
+  def students
+    @students = User.where(assesor: false)
+  end
+
+  def call
+   TwilioCallService.new("447549273987").call
+
+  end
+
 
   def verify
     @user = current_user

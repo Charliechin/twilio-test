@@ -1,4 +1,5 @@
 class TwilioSmsService
+#  TwilioSmsService.new("your message here").call
   attr_reader :message
 
   def initialize(message)
