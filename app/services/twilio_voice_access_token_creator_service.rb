@@ -1,5 +1,5 @@
 require 'twilio-ruby'
-class TwilioVoiceAccessTokenService
+class TwilioVoiceAccessTokenCreatorService
   #Returns a JWT voice token
 
   def initialize
@@ -30,7 +30,7 @@ class TwilioVoiceAccessTokenService
       )
 
     # Generate the token
-    token.to_jwt
+    puts token.to_jwt
   end
 
 
