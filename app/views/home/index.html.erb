@@ -1,49 +1,73 @@
-<h1>Home#index</h1>
-<p class="lead">Find me in app/views/home/index.html.erb</p>
 <div class="container">
+  <h1>Home#index</h1>
+
   <div class="row">
-    <div class="col-md-12">ojete</div>
-  </div>
-</div>
+    <% unless current_user.verified? %>
+    <div class="col-md-4">
+      <h1>Just To Be Safe...</h1>
+      <p>
+        Your account has been created, but we need to make sure you're a human
+        in control of the phone number you gave us. Can you please enter the
+        verification code we just sent to your phone?
+      </p>
 
-
-
-
-
-<h1>Just To Be Safe...</h1>
-<p>
-  Your account has been created, but we need to make sure you're a human
-  in control of the phone number you gave us. Can you please enter the
-  verification code we just sent to your phone?
-</p>
-<%= form_tag home_verify_path do %>
-<div class="form-group">
-  <%= label_tag :code, "Verification Code:" %>
-  <%= text_field_tag :token, '', class: "form-control" %>
-</div>
-<button type="submit" class="btn btn-primary">Verify Token</button>
-<% end -%>
-
-<hr>
-<%= form_tag home_resend_path do %>
-<button type="submit" class="btn">Resend code</button>
-<% end -%>
-
-<h2> browse video </h2>
-
- <div class="panel panel-info client-controls">
+      <div class="panel panel-info client-controls">
         <div class="panel-heading">
-          <h3 class="panel-title">Talk to support now</h3>
+          <h3 class="panel-title">Just to be safe...</h3>
         </div>
         <div class="panel-body">
-          <p><strong>Status</strong></p>
-          <div class="well well-sm" id="call-status">
-            Connecting to Twilio...
+          <%= form_tag home_verify_path do %>
+          <div class="form-group">
+            <%= label_tag :code, "Verification Code:" %>
+            <%= text_field_tag :token, '', class: "form-control" %>
           </div>
-
-          <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent()">
-            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call student
-          </button>
-          <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>
+          <button type="submit" class="btn btn-primary">Verify Token</button>
+          <%= form_tag home_resend_path do %>
+          <button type="submit" class="btn">Resend code</button>
+          <% end -%>
+          <% end -%>
         </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <% if current_user.assesor %>
+      <h2>Student</h2>
+      <ul>
+        <% @students.each do |student| %>
+        <li>
+          <p><strong>Student name: </strong> <%= student.first_name %></p>
+          <p><strong>Student email: </strong> <%= student.email %></p>
+          <p><strong>Student phone number: </strong> <%= student.phone_number %></p>
+
+          <div class="panel panel-info client-controls">
+            <div class="panel-heading">
+              <h3 class="panel-title">Talk to a student</h3>
+            </div>
+            <div class="panel-body">
+              <p><strong>Status</strong></p>
+              <div class="well well-sm" id="call-status">
+                Connecting to Twilio...
+              </div>
+
+              <div class="text-center">
+                <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent()">
+                  <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call student
+                </button>
+                <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+        </li>
+        <% end %>
+      </ul>
+      <% end %>
+
+    </div>
+
+  </div>
+
 

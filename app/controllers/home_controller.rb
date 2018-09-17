@@ -3,6 +3,7 @@ class HomeController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
+    @students = User.where(assesor: false)
   end
 
   def verify
@@ -21,11 +22,11 @@ class HomeController < ApplicationController
 
   def call
    TwilioCallService.new("447549273987").call
-  end
+ end
 
 
-  def verify
-    @user = current_user
+ def verify
+  @user = current_user
 
     # Use Authy to send the verification token
     token = Authy::API.verify(id: @user.authy_id, token: params[:token])
@@ -53,7 +54,7 @@ class HomeController < ApplicationController
       :from => twilio_number,
       :to => @user.country_code+@user.phone_number,
       :body => message
-    )
+      )
   end
 
 
