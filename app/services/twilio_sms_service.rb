@@ -1,4 +1,4 @@
-class TwilioSms
+class TwilioSmsService
   attr_reader :message
 
   def initialize(message)
