@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2018_09_16_195850) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "assesor"
-    t.string "country_code"
+    t.string "country_code", default: "44"
     t.string "phone_number"
     t.string "first_name"
     t.string "last_name"

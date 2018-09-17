@@ -11,7 +11,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  assesor                :boolean
-#  country_code           :string
+#  country_code           :string           default("44")
 #  phone_number           :string
 #  first_name             :string
 #  last_name              :string

@@ -18,7 +18,6 @@ class HomeController < ApplicationController
 
   def call
    TwilioCallService.new("447549273987").call
-
   end
 
 
