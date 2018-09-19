@@ -1,6 +1,10 @@
 <div class="container">
   <h1>Home#index</h1>
-
+<div class="row">
+  <div class="col-md-12">
+    <button onClick="call()">Call </button>
+  </div>
+</div>
   <div class="row">
     <% unless current_user.verified? %>
     <div class="col-md-4">
@@ -53,7 +57,7 @@
               </div>
 
               <div class="text-center">
-                <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent()">
+              <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent(<%= student.phone_number %>)">
                   <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call student
                 </button>
                 <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>

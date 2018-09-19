@@ -16,10 +16,14 @@ function updateCallStatus(status) {
   $.post("/token/generate", {page: window.location.pathname}, function(data) {
     // Set up the Twilio Client Device with the token
     console.log("He llegado");
-    console.log(Twilio.device);
+    console.log(Twilio.Device);
     Twilio.Device.setup(data.token);
   });
 });
+
+function call() {
+  Twilio.Device.connect({id: 1})
+}
 
 /* Callback to let us know Twilio Client is ready */
 Twilio.Device.ready(function (device) {
@@ -75,20 +79,12 @@ Twilio.Device.incoming(function(connection) {
   answerButton.prop("disabled", false);
 });
 
-/* Call a customer from a support ticket */
-function callCustomer(phoneNumber) {
+/* Call the support_agent from the home page */
+function callStudent(phoneNumber) {
+  console.log(phoneNumber);
   updateCallStatus("Calling " + phoneNumber + "...");
-
   var params = {"phoneNumber": phoneNumber};
   Twilio.Device.connect(params);
-}
-
-/* Call the support_agent from the home page */
-function callStudent() {
-  updateCallStatus("Calling student...");
-
-  // Our backend will assume that no params means a call to support_agent
-  Twilio.Device.connect();
 }
 
 /* End a call */

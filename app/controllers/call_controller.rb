@@ -2,25 +2,27 @@ class CallController < ApplicationController
  skip_before_action :verify_authenticity_token
 # before_action :authenticate_user!
 
-  def connect
-    render xml: twilio_reponse
-  end
+def connect
+  render xml: twilio_reponse
+end
 
-  private
+private
 
-  def twilio_reponse
-    twilio_number = Rails.application.secrets.twilio_number
-    res = Twilio::TwiML::VoiceResponse.new do |response|
-    dial = Twilio::TwiML::Dial.new caller_id: twilio_number
-      if params.include?(:phone_number)
-        dial.number params[:phone_number]
-      else
-        # call some other number
-        dial.number("447549273987")
-      end
-      response.append(dial)
+def twilio_reponse
+  twilio_number = Rails.application.secrets.twilio_number
+  response = Twilio::TwiML::VoiceResponse.new do | r |
+
+    if params[:phoneNumber] != "7549273987"
+      r.say(message: "Sorry dude, This Call won't work because this is a demo account.", voice:"alice")
+    else
+      r.say(message: "This is working", voice:"alice")
     end
-    return res.to_s
+
+    dial = Twilio::TwiML::Dial.new caller_id: twilio_number
+    dial.number("44" + params[:phoneNumber])
+    r.append(dial)
   end
+      return response.to_s
+end
 
 end
