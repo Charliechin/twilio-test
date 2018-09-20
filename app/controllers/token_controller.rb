@@ -8,4 +8,10 @@ class TokenController < ApplicationController
     render json: { token: token }
   end
 
+  def generate_video
+    identity = params[:identity]
+    token = ::TwilioCapability.generate_video(params[:identity])
+    render json: {token: token, identity: identity}
+  end
+
 end

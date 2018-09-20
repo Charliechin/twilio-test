@@ -1,5 +1,5 @@
 require 'twilio-ruby'
-class TwilioVoiceAccessTokenCreatorService
+class TwilioVideoTokenCreatorService
   #Returns a JWT voice token
 
   def initialize
@@ -13,12 +13,11 @@ class TwilioVoiceAccessTokenCreatorService
     api_secret  = Rails.application.secrets.twilio_api_secret
     api_sid     = Rails.application.secrets.twilio_api_sid
     # Required for Voice
-    outgoing_application_sid = api_sid
     identity = 'user'
+    # Create an Access Token
 
     # Create Voice grant for our token
-    grant = Twilio::JWT::AccessToken::VoiceGrant.new
-    grant.outgoing_application_sid = outgoing_application_sid
+    grant = Twilio::JWT::AccessToken::VideoGrant.new
 
     # Create an Access Token
     token = Twilio::JWT::AccessToken.new(

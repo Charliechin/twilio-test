@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   get  'home/students'
   get  'home/call'
   post 'token/generate' => "token#generate"
+  post 'token/generate_video' => "token#generate_video"
   post 'call/connect' => "call#connect"
+  get  'video_call/index' => "video_call#index"
 
 
 

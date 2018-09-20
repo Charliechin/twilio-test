@@ -11,15 +11,16 @@ private
 def twilio_reponse
   twilio_number = Rails.application.secrets.twilio_number
   response = Twilio::TwiML::VoiceResponse.new do | r |
-
-    if params[:phoneNumber] != "7549273987"
-      r.say(message: "Sorry dude, This Call won't work because this is a demo account.", voice:"alice")
+    dial = Twilio::TwiML::Dial.new caller_id: twilio_number
+    if params.include?(:phoneNumber)
+      r.say(message: "This is working, connecting: ", voice:"alice")
+      dial.number("44" + params[:phoneNumber])
     else
-      r.say(message: "This is working", voice:"alice")
+      #if there are no phone numbers, call the app
+      dial.client('user');
+      r.say(message: "Calling Rails app", voice:"alice")
     end
 
-    dial = Twilio::TwiML::Dial.new caller_id: twilio_number
-    dial.number("44" + params[:phoneNumber])
     r.append(dial)
   end
       return response.to_s

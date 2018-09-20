@@ -1,10 +1,14 @@
 <div class="container">
   <h1>Home#index</h1>
-<div class="row">
-  <div class="col-md-12">
-    <button onClick="call()">Call </button>
+  <div class="row">
+    <div class="col-md-12">
+      <button onClick="call()">Call </button>
+      <button onClick="callApplication()">Call  Application</button>
+      <button onClick="hangUp()">Hang up</button>
+      <br>
+      <button id="answerBtn">Answer the call</button>
+    </div>
   </div>
-</div>
   <div class="row">
     <% unless current_user.verified? %>
     <div class="col-md-4">
@@ -57,7 +61,7 @@
               </div>
 
               <div class="text-center">
-              <button class="btn btn-lg btn-primary call-support-button" onclick="callStudent(<%= student.phone_number %>)">
+                <button class="btn btn-lg btn-primary call-support-button" onclick="call('<%= student.phone_number %>')">
                   <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call student
                 </button>
                 <button class="btn btn-lg btn-danger hangup-button" disabled onclick="hangUp()">Hang up</button>
@@ -75,3 +79,91 @@
   </div>
 
 
+  <script>
+    answerBtn = $('#answerBtn');
+
+    $(document).on('turbolinks:load', function() {
+     var callStatus = $("#call-status");
+     var answerButton = $(".answer-button");
+     var callStudentButton = $(".call-support-button");
+     var hangUpButton = $(".hangup-button");
+     var callCustomerButtons = $(".call-customer-button");
+
+     $.post("/token/generate", {page: window.location.pathname}, function(data) {
+       // Set up the Twilio Client Device with the token
+       console.log("He llegado");
+       console.log(Twilio.Device);
+       Twilio.Device.setup(data.token);
+     });
+   });
+
+    function call(phoneNumber) {
+      Twilio.Device.connect({"phoneNumber": phoneNumber})
+    }
+    function callApplication() {
+      Twilio.Device.connect();
+    }
+
+    function hangUp() {
+      Twilio.Device.disconnectAll();
+    }
+
+
+    Twilio.Device.incoming(function(connection) {
+
+  // Set a callback to be executed when the connection is accepted
+  connection.accept(function() {
+    console.log("Call accepted")
+  });
+
+  answerBtn.click(function() {
+    connection.accept();
+  });
+
+  /* Helper function to update the call status bar */
+  function updateCallStatus(status) {
+    $("#call-status").text(status);
+  }
+  /* Callback to let us know Twilio Client is ready */
+  Twilio.Device.ready(function (device) {
+    updateCallStatus("Ready");
+  });
+
+  /* Report any errors to the call status display */
+  Twilio.Device.error(function (error) {
+    updateCallStatus("ERROR: " + error.message);
+  });
+
+  /* Callback for when Twilio Client initiates a new connection */
+  Twilio.Device.connect(function (connection) {
+  // Enable the hang up button and disable the call buttons
+  $(".hangup-button").prop("disabled", false);
+  callCustomerButtons.prop("disabled", true);
+  callStudentButton.prop("disabled", true);
+  answerButton.prop("disabled", true);
+
+  // If phoneNumber is part of the connection, this is a call from a
+  // support agent to a customer's phone
+  if ("phoneNumber" in connection.message) {
+    updateCallStatus("In call with " + connection.message.phoneNumber);
+  } else {
+    // This is a call from a website user to a support agent
+    updateCallStatus("In call with student");
+  }
+});
+
+  /* Callback for when a call ends */
+  Twilio.Device.disconnect(function(connection) {
+  // Disable the hangup button and enable the call buttons
+  $(".hangup-button").prop("disabled", true);
+  callCustomerButtons.prop("disabled", false);
+  callStudentButton.prop("disabled", false);
+
+  updateCallStatus("Ready");
+});
+
+
+});
+
+
+</script>
