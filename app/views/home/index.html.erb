@@ -40,82 +40,71 @@
       </div>
     <% end %>
   </div>
-  <div class="row">
-    <div class="col-md-6">
-      <% if current_user.assesor %>
-        <h2>Students</h2>
-    </div>
-    <ul>
-      <% @students.each do |student| %>
-        <li>
-          <p><strong>Student name: </strong> <%= student.first_name %></p>
-          <p><strong>Student email: </strong> <%= student.email %></p>
-          <p><strong>Student phone number: </strong> <%= student.phone_number %></p>
+ <div class="row">
 
-          <div class="panel panel-info client-controls">
-        <div class="panel-heading">
-          <h3 class="panel-title">Talk to this client now</h3>
-        </div>
-        <div class="panel-body">
-          <p><strong>Status</strong></p>
-          <div class="well well-sm" id="call-status">Ready</div>
-
-          <button class="btn btn-lg btn-primary call-support-button" onclick="callClient('<%= student.phone_number%>')">
-            <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call support
-          </button>
-          <button class="btn btn-lg btn-danger hangup-button" disabled="" onclick="hangUp()">Hang up</button>
-        </div>
+  <% if current_user.assesor %>
+  <div class="col-md-12">
+    <h2>Clients</h2>
+    <hr>
+  </div>
+  <% @students.each do |student| %>
+  <div class="col-md-4">
+    <div class="panel panel-info client-controls">
+      <div class="panel-heading">
+        <h3 class="panel-title">Talk to this client now</h3>
       </div>
-          <hr>
-        </li>
-      <% end %>
-    </ul>
+      <div class="panel-body">
+        <p><strong>Name: </strong> <%= student.first_name %> </p>
+        <p><strong>Email: </strong> <%= student.email %> </p>
+        <p><strong>Phone Number: </strong> <%= student.phone_number %> </p>
+        <hr>
+        <p><strong>Status</strong></p>
+        <div class="well well-sm" id="call-status">Ready</div>
+
+        <button class="btn btn-lg btn-primary call-support-button" onclick="callClient('<%= student.phone_number%>')">
+          <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call client
+        </button>
+        <button class="btn btn-lg btn-danger hangup-button" disabled="" onclick="hangUp()">Hang up</button>
+      </div>
+    </div>
+  </div>
+  <% end %> <!-- students loop -->
   <% else %>
-    <!-- Harcoded Student view -->
-    <div class="row">
-      <div class="col-md-8">
-        <h2>Profile</h2>
-        <hr>
-
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <img src="https://placeimg.com/640/480/people" class="img-responsive" alt="">
-      </div>
-      <div class="col-md-6">
-        <ul>
-          <li style="font-size:1.4em"> <strong>Name: </strong><%= current_user.first_name %></li>
-          <li style="font-size:1em"> <strong>Email: </strong><%= current_user.email %></li>
-        </ul>
-      </div>
-      <div class="col-md-12">
-        <br>
-        <h2> Assesor</h2>
-        <hr>
-
-
-        <div class="card" style="width: 300px;">
-          <img class="card-img-top" src="https://placeimg.com/320/240/animals" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <button class="btn btn-sm btn-primary call-support-button" onclick="callClient('<%= @assesor.phone_number %>')">
-              <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call Assesor
-            </button>
-
-            <button class="btn btn-danger hangup-button"  onclick="hangUp()">Hang up</button>
-
-          </div>
-        </div>
-
-
-      </div>
-    </div>
-    <% end %>
-
+  <div class="col-md-12">
+    <h2>Profile</h2>
+    <hr>
+  </div>
+  <div class="col-md-4">
+    <img src="https://placeimg.com/640/480/people" class="img-responsive" alt="">
+  </div>
+  <div class="col-md-6">
+    <ul>
+      <li style="font-size:1.4em"> <strong>Name: </strong><%= current_user.first_name %></li>
+      <li style="font-size:1em"> <strong>Email: </strong><%= current_user.email %></li>
+    </ul>
   </div>
 
+  <div class="col-md-12" style="margin-bottom:20px">
+    <h2> Assesor</h2>
+    <hr>
+
+
+    <div class="card" style="width: 300px;">
+      <img class="card-img-top" src="https://placeimg.com/320/240/animals" alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <button class="btn btn-sm btn-primary call-support-button" onclick="callClient('<%= @assesor.phone_number %>')">
+          <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call Assesor
+        </button>
+
+        <button class="btn btn-danger hangup-button"  onclick="hangUp()">Hang up</button>
+
+      </div>
+    </div>
+  </div>
+
+  <% end %>
 </div>
 
 
@@ -173,7 +162,7 @@ Twilio.Device.disconnect(function(connection) {
   hangUpButton.prop("disabled", true);
   callCustomerButtons.prop("disabled", false);
   callSupportButton.prop("disabled", false);
-
+alert("disconnected");
   updateCallStatus("Ready");
 });
 

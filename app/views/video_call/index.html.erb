@@ -1,27 +1,32 @@
- <!-- video stuff -->
- <div id="remote-media"></div>
- <div id="controls">
-  <div id="preview">
-    <p class="instructions">Hello Beautiful</p>
-    <div id="local-media"></div>
-    <button id="button-preview">Preview My Camera</button>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3"> <h2 class="text-center"> Video Calls</h2> <hr></div>
+    <div class="col-md-12 text-center">
+      <div id="remote-media"></div>
+      <div id="controls">
+        <div id="preview">
+          <div id="local-media"></div>
+          <button id="button-preview">Preview My Camera</button>
+        </div>
+        <div id="room-controls">
+          <p class="instructions">Room Name:</p>
+          <input id="room-name" type="text" placeholder="Enter a room name" />
+          <button id="button-join">Join Room</button>
+          <button id="button-leave">Leave Room</button>
+        </div>
+        <div id="log"></div>
+      </div>
+
+    </div>
   </div>
-  <div id="room-controls">
-    <p class="instructions">Room Name:</p>
-    <input id="room-name" type="text" placeholder="Enter a room name" />
-    <button id="button-join">Join Room</button>
-    <button id="button-leave">Leave Room</button>
-  </div>
-  <div id="log"></div>
 </div>
-<!-- video stuff -->
 <script>
-var Video = Twilio.Video
-var activeRoom;
-var previewTracks;
-var identity;
-var roomName;
-var previewTracks;
+  var Video = Twilio.Video
+  var activeRoom;
+  var previewTracks;
+  var identity;
+  var roomName;
+  var previewTracks;
 
 // Attach the Tracks to the DOM.
 function attachTracks(tracks, container) {
@@ -49,8 +54,7 @@ function detachParticipantTracks(participant) {
   var tracks = Array.from(participant.tracks.values());
   detachTracks(tracks);
 }
-// When we are about to transition away from this page, disconnect
-// from the room, if joined.
+//disconnect from the room, if joined.
 window.addEventListener('beforeunload', leaveRoomIfJoined);
 
 
@@ -86,7 +90,6 @@ $.post("/token/generate_video", {identity: "<%= @identity %>"}, function(data) {
   identity = data.identity || 'default';
 
   // Set up the Twilio Client Device with the token
-  console.log("He llegado");
   document.getElementById('room-controls').style.display = "block";
 
 
@@ -187,8 +190,8 @@ function roomJoined(room) {
 // Preview LocalParticipant's Tracks.
 document.getElementById('button-preview').onclick = function() {
   var localTracksPromise = previewTracks
-    ? Promise.resolve(previewTracks)
-    : Video.createLocalTracks();
+  ? Promise.resolve(previewTracks)
+  : Video.createLocalTracks();
 
   localTracksPromise.then(function(tracks) {
     window.previewTracks = previewTracks = tracks;
