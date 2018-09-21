@@ -1,24 +1,18 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+After install:
 
-Things you may want to cover:
+* Run the server
 
-* Ruby version
+* Run ngrok (in the console: ngrok http 3000 )
 
-* System dependencies
+* Copy the forwarding HTTPS URL 
 
-* Configuration
+* Go to twilio.com & Login
 
-* Database creation
+* In 'Phone Numbers' section, choose 'Tools' > 'TwiML Apps' > rails-calls
 
-* Database initialization
+* Paste the previous HTTPS URL in 'REQUEST URL' leaving at the end /call/connect
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* Ex. If your copied URL is https://f444b12.ngrok.io, your text field should be
+https://f444b12.ngrok.io/call/connect

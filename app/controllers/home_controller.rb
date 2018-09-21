@@ -3,6 +3,8 @@ class HomeController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
+    # Harcoded assesor for demo
+    @assesor = User.first
     @students = User.where(assesor: false)
   end
 

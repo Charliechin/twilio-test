@@ -1,8 +1,4 @@
-// var callStatus = $("#call-status");
-// var answerButton = $(".answer-button");
-// var callStudentButton = $(".call-support-button");
-// var hangUpButton = $(".hangup-button");
-// var callCustomerButtons = $(".call-customer-button");
+
 
 // /* Helper function to update the call status bar */
 // function updateCallStatus(status) {

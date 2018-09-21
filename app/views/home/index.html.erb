@@ -11,40 +11,41 @@
   </div>
   <div class="row">
     <% unless current_user.verified? %>
-    <div class="col-md-4">
-      <h1>Just To Be Safe...</h1>
-      <p>
+      <div class="col-md-4">
+        <h1>Just To Be Safe...</h1>
+        <p>
         Your account has been created, but we need to make sure you're a human
         in control of the phone number you gave us. Can you please enter the
         verification code we just sent to your phone?
-      </p>
+        </p>
 
-      <div class="panel panel-info client-controls">
-        <div class="panel-heading">
-          <h3 class="panel-title">Just to be safe...</h3>
-        </div>
-        <div class="panel-body">
-          <%= form_tag home_verify_path do %>
-          <div class="form-group">
-            <%= label_tag :code, "Verification Code:" %>
-            <%= text_field_tag :token, '', class: "form-control" %>
+        <div class="panel panel-info client-controls">
+          <div class="panel-heading">
+            <h3 class="panel-title">Just to be safe...</h3>
           </div>
-          <button type="submit" class="btn btn-primary">Verify Token</button>
-          <%= form_tag home_resend_path do %>
-          <button type="submit" class="btn">Resend code</button>
-          <% end -%>
-          <% end -%>
+          <div class="panel-body">
+            <%= form_tag home_verify_path do %>
+              <div class="form-group">
+                <%= label_tag :code, "Verification Code:" %>
+                <%= text_field_tag :token, '', class: "form-control" %>
+              </div>
+              <button type="submit" class="btn btn-primary">Verify Token</button>
+              <%= form_tag home_resend_path do %>
+                <button type="submit" class="btn">Resend code</button>
+              <% end -%>
+            <% end -%>
+          </div>
         </div>
       </div>
-    </div>
     <% end %>
   </div>
   <div class="row">
     <div class="col-md-6">
       <% if current_user.assesor %>
-      <h2>Student</h2>
-      <ul>
-        <% @students.each do |student| %>
+        <h2>Students</h2>
+    </div>
+    <ul>
+      <% @students.each do |student| %>
         <li>
           <p><strong>Student name: </strong> <%= student.first_name %></p>
           <p><strong>Student email: </strong> <%= student.email %></p>
@@ -70,46 +71,88 @@
           </div>
           <hr>
         </li>
-        <% end %>
-      </ul>
       <% end %>
+    </ul>
+  <% else %>
+    <!-- Harcoded Student view -->
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Profile</h2>
+        <hr>
 
+      </div>
     </div>
+    <div class="row">
+      <div class="col-md-4">
+        <img src="https://placeimg.com/640/480/people" class="img-responsive" alt="">
+      </div>
+      <div class="col-md-6">
+        <ul>
+          <li style="font-size:1.4em"> <strong>Name: </strong><%= current_user.first_name %></li>
+          <li style="font-size:1em"> <strong>Email: </strong><%= current_user.email %></li>
+        </ul>
+      </div>
+      <div class="col-md-12">
+        <br>
+        <h2> Assesor</h2>
+        <hr>
+
+
+        <div class="card" style="width: 300px;">
+          <img class="card-img-top" src="https://placeimg.com/320/240/animals" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <button class="btn btn-sm btn-primary call-support-button" onclick="call('<%= @assesor.phone_number %>')">
+              <span class="glyphicon glyphicon-earphone" aria-hidden="true"></span> Call Assesor
+            </button>
+
+            <button class="btn btn-danger hangup-button"  onclick="hangUp()">Hang up</button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <% end %>
 
   </div>
 
-
-  <script>
-    answerBtn = $('#answerBtn');
-
-    $(document).on('turbolinks:load', function() {
-     var callStatus = $("#call-status");
-     var answerButton = $(".answer-button");
-     var callStudentButton = $(".call-support-button");
-     var hangUpButton = $(".hangup-button");
-     var callCustomerButtons = $(".call-customer-button");
-
-     $.post("/token/generate", {page: window.location.pathname}, function(data) {
-       // Set up the Twilio Client Device with the token
-       console.log("He llegado");
-       console.log(Twilio.Device);
-       Twilio.Device.setup(data.token);
-     });
-   });
-
-    function call(phoneNumber) {
-      Twilio.Device.connect({"phoneNumber": phoneNumber})
-    }
-    function callApplication() {
-      Twilio.Device.connect();
-    }
-
-    function hangUp() {
-      Twilio.Device.disconnectAll();
-    }
+</div>
 
 
-    Twilio.Device.incoming(function(connection) {
+<script>
+  answerBtn = $('#answerBtn');
+
+  $(document).on('turbolinks:load', function() {
+    var callStatus = $("#call-status");
+    var answerButton = $(".answer-button");
+    var callStudentButton = $(".call-support-button");
+    var hangUpButton = $(".hangup-button");
+    var callCustomerButtons = $(".call-customer-button");
+
+    $.post("/token/generate", {page: window.location.pathname}, function(data) {
+    // Set up the Twilio Client Device with the token
+    console.log("He llegado");
+    console.log(Twilio.Device);
+    Twilio.Device.setup(data.token);
+  });
+  });
+
+  function call(phoneNumber) {
+    Twilio.Device.connect({"phoneNumber": phoneNumber})
+  }
+  function callApplication() {
+    Twilio.Device.connect();
+  }
+
+  function hangUp() {
+    Twilio.Device.disconnectAll();
+  }
+
+
+  Twilio.Device.incoming(function(connection) {
 
   // Set a callback to be executed when the connection is accepted
   connection.accept(function() {
@@ -136,31 +179,46 @@
 
   /* Callback for when Twilio Client initiates a new connection */
   Twilio.Device.connect(function (connection) {
-  // Enable the hang up button and disable the call buttons
-  $(".hangup-button").prop("disabled", false);
-  callCustomerButtons.prop("disabled", true);
-  callStudentButton.prop("disabled", true);
-  answerButton.prop("disabled", true);
+    // Enable the hang up button and disable the call buttons
+    $(".hangup-button").prop("disabled", false);
+    callCustomerButtons.prop("disabled", true);
+    callStudentButton.prop("disabled", true);
+    answerButton.prop("disabled", true);
 
-  // If phoneNumber is part of the connection, this is a call from a
-  // support agent to a customer's phone
-  if ("phoneNumber" in connection.message) {
-    updateCallStatus("In call with " + connection.message.phoneNumber);
-  } else {
-    // This is a call from a website user to a support agent
-    updateCallStatus("In call with student");
-  }
-});
+    // If phoneNumber is part of the connection, this is a call from a
+    // support agent to a customer's phone
+    if ("phoneNumber" in connection.message) {
+      updateCallStatus("In call with " + connection.message.phoneNumber);
+    } else {
+      // This is a call from a website user to a support agent
+      updateCallStatus("In call with student");
+    }
+  });
 
   /* Callback for when a call ends */
   Twilio.Device.disconnect(function(connection) {
-  // Disable the hangup button and enable the call buttons
-  $(".hangup-button").prop("disabled", true);
-  callCustomerButtons.prop("disabled", false);
-  callStudentButton.prop("disabled", false);
+    // Disable the hangup button and enable the call buttons
+    $(".hangup-button").prop("disabled", true);
+    callCustomerButtons.prop("disabled", false);
+    callStudentButton.prop("disabled", false);
 
-  updateCallStatus("Ready");
-});
+    updateCallStatus("Ready");
+  });
+
+  Twilio.Device.incoming(function(connection) {
+    updateCallStatus("Incoming support call");
+
+    // Set a callback to be executed when the connection is accepted
+    connection.accept(function() {
+      updateCallStatus("In call with customer");
+    });
+
+    // Set a callback on the answer button and enable it
+    answerButton.click(function() {
+      connection.accept();
+    });
+    answerButton.prop("disabled", false);
+  });
 
 
 });
